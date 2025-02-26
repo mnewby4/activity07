@@ -36,16 +36,19 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
                 return AnimatedOpacity(
                   opacity: _isVisible ? 1.0 : 0.0,
                   duration: Duration(seconds: 1),
-                  child: const Text(
-                    'Hello, Flutter!',
+                  child: Text(
+                    _isVisible ? 'Hello, Flutter!' : 'Oh, Goodbye!',
                     style: TextStyle(fontSize: 24),
                   ),
                 );
 
               return AnimatedCrossFade(
-                duration: const Duration(seconds: 3),
+                //Different animation duration
+                duration: const Duration(seconds: 5),
                 firstChild: const FlutterLogo(style: FlutterLogoStyle.horizontal, size: 100.0),
                 secondChild: const FlutterLogo(style: FlutterLogoStyle.stacked, size: 100.0),
+                firstCurve: Curves.bounceIn,
+                secondCurve: Curves.bounceInOut,
                 crossFadeState: _isVisible ? CrossFadeState.showFirst : CrossFadeState.showSecond,
               );
             },
