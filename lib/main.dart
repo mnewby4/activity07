@@ -55,14 +55,19 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
                     child: FlutterLogo(style: FlutterLogoStyle.horizontal, size: 100.0),
                   ),
                 ),
-                secondChild: ClipRRect(
-                  borderRadius: BorderRadius.circular(_showFrame ? 20.0 : 0.0),
-                  child: Container(
-                    color: Colors.pink, // Background color to visualize rounded corners
-                    padding: EdgeInsets.all(8.0),
-                    child: FlutterLogo(style: FlutterLogoStyle.stacked, size: 100.0),
+                secondChild: AnimatedRotation(
+                    turns: _isVisible ? 0.0 : 1.0, 
+                    duration: Duration(seconds: 1), 
+                    curve: Curves.easeInOut, 
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(_showFrame ? 20.0 : 0.0),
+                      child: Container(
+                        color: Colors.pink, // Background color to visualize rounded corners
+                        padding: EdgeInsets.all(8.0),
+                        child: FlutterLogo(style: FlutterLogoStyle.stacked, size: 100.0),
+                      ),
+                    ),
                   ),
-                ),
                 firstCurve: Curves.bounceIn,
                 secondCurve: Curves.bounceInOut,
                 crossFadeState: _isVisible ? CrossFadeState.showFirst : CrossFadeState.showSecond,
