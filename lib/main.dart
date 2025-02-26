@@ -20,6 +20,7 @@ class FadingTextAnimation extends StatefulWidget {
 
 class _FadingTextAnimationState extends State<FadingTextAnimation> {
   bool _isVisible = true;
+  bool _showFrame = true;
   void toggleVisibility() {
     setState(() {
       _isVisible = !_isVisible;
@@ -29,7 +30,8 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
   Widget createItem(String text, Color color) {
     return Scaffold(
       backgroundColor: color,
-      body: Container(child:
+      body: Container(child:    
+  
           Builder(
             builder: (context) {
               if (text == "First Page") 
@@ -45,8 +47,27 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
               return AnimatedCrossFade(
                 //Different animation duration
                 duration: const Duration(seconds: 5),
-                firstChild: const FlutterLogo(style: FlutterLogoStyle.horizontal, size: 100.0),
-                secondChild: const FlutterLogo(style: FlutterLogoStyle.stacked, size: 100.0),
+                firstChild: ClipRRect(
+                  borderRadius: BorderRadius.circular(_showFrame ? 20.0 : 0.0),
+                  child: Container(
+                    color: Colors.purple, // Background color to visualize rounded corners
+                    padding: EdgeInsets.all(8.0),
+                    child: FlutterLogo(style: FlutterLogoStyle.horizontal, size: 100.0),
+                  ),
+                ),
+                secondChild: AnimatedRotation(
+                    turns: _isVisible ? 0.0 : 1.0, 
+                    duration: Duration(seconds: 1), 
+                    curve: Curves.easeInOut, 
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(_showFrame ? 20.0 : 0.0),
+                      child: Container(
+                        color: Colors.pink, // Background color to visualize rounded corners
+                        padding: EdgeInsets.all(8.0),
+                        child: FlutterLogo(style: FlutterLogoStyle.stacked, size: 100.0),
+                      ),
+                    ),
+                  ),
                 firstCurve: Curves.bounceIn,
                 secondCurve: Curves.bounceInOut,
                 crossFadeState: _isVisible ? CrossFadeState.showFirst : CrossFadeState.showSecond,
@@ -61,15 +82,26 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fading Text Animation'),
+        title: Text('Activity 7'),  
+        actions: [
+           Switch(
+              value: _showFrame,
+              activeColor: Colors.red,
+              onChanged: (bool value) {
+                setState(() {
+                _showFrame = value;
+                });
+              },
+            ),
+        ], 
       ),
       body: 
         PageView(
           children: <Widget>[
             createItem('First Page', Colors.red),
             createItem('Second Page', Colors.blue),
-          ],
-        ),
+                    
+          ]),
         floatingActionButton: FloatingActionButton(
           onPressed: toggleVisibility,
           child: Icon(Icons.play_arrow),
